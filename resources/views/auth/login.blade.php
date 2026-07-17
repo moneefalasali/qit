@@ -106,7 +106,7 @@
         top: 0;
         bottom: 0;
         left: 50%;
-        width: 18px;
+        width: 12px;
         transform: translateX(-50%);
         pointer-events: none;
         z-index: 3;
@@ -114,6 +114,20 @@
         clip-path: polygon(0 0, 100% 0, 100% 100%, 60% 100%, 46% 86%, 30% 72%, 18% 54%, 8% 24%, 0 0);
         box-shadow: 0 0 0 1px rgba(255,255,255,0.75);
         opacity: 1;
+    }
+
+    @media (max-width: 991.98px) {
+        .auth-divider {
+            display: none;
+        }
+
+        .auth-split {
+            flex-direction: column !important;
+        }
+
+        .auth-split .col-lg-6 {
+            width: 100%;
+        }
     }
 </style>
 @endsection
