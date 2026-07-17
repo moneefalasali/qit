@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'home' => 'Home',
+    'about' => 'About',
+    'services' => 'Services',
+    'contact' => 'Contact Us',
+    'request_labor' => 'Request Labor',
+    'register_worker' => 'Register Worker',
+    'login' => 'Login',
+    'register' => 'Create Account',
+    'logout' => 'Logout',
+    'dashboard' => 'Dashboard',
+    'welcome' => 'Welcome to Qitaf Al-Qassim',
+    'get_started' => 'Get Started',
+    'our_services' => 'Our Services',
+    'why_choose_us' => 'Why Choose Us',
+    'trusted_by' => 'Trusted By',
+    'about_text' => 'A leading platform for providing certified agricultural labor to farmers in Al-Qassim during harvest season.',
+    'quick_links' => 'Quick Links',
+    'contact_us' => 'Contact Us',
+    'follow_us' => 'Follow Us',
+    'all_rights_reserved' => 'All rights reserved',
+    'app_name' => 'Qitaf Al-Qassim Platform',
+];
