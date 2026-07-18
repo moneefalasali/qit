@@ -5,21 +5,38 @@
 @section('styles')
 <style>
     .about-hero {
-        background: #243f13;
+        position: relative;
+        background: url('/images/images.jpg') center/cover no-repeat;
         color: white;
         padding: 80px 20px;
         text-align: center;
+        overflow: hidden;
+    }
+
+    .about-hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, rgba(132, 107, 10, 0.9) 0%, rgba(160, 140, 8, 0.7) 45%, rgba(255, 255, 255, 0.20) 100%);
+        z-index: 0;
+    }
+
+    .about-hero > * {
+        position: relative;
+        z-index: 1;
     }
 
     .about-hero h1 {
         font-size: 42px;
         margin-bottom: 15px;
         font-weight: 800;
+        color: #ffffff;
     }
 
     .about-hero p {
         font-size: 18px;
-        color: #e8dcc8;
+        color: #e9d7a6;
+        font-weight: 600;
     }
 
     .about-section {
@@ -52,13 +69,17 @@
     }
 
     .about-image {
-        background-color: #e8dcc8;
         height: 400px;
         border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 100px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .about-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
     }
 
     .values-grid {
@@ -165,7 +186,7 @@
             <p>توفير منصة رقمية تربط مزارعي ومستثمري التمور في منطقة القصيم بمقدمي الخدمات الزراعية المؤهلين عبر مطابقة الطلبات وفق طبيعة الخدمة ومتطلبات التنفيذ، وتنظيم اجراءات الطلب ومتابعتها حتى اكتمالها، للمساهمة في رفع كفاءة تقديم الخدمات الزراعية وتحقيق قيمة مضافة للمزارعين ومقدمي الخدمات.</p>
         </div>
         <div class="about-image">
-            🌾
+            <img src="{{ asset('images/date-palm-plantation.jpg') }}" alt="رؤيتنا ورسالتنا" loading="lazy">
         </div>
     </div>
 </section>
@@ -222,31 +243,27 @@
     <h2 class="section-title">فريقنا</h2>
     <div class="team-grid">
         <div class="team-member">
-            <div class="member-image">👨‍💼</div>
+            <div class="member-image">👩‍💼</div>
             <div class="member-info">
-                <h4>أحمد السويلم</h4>
-                <p>المدير التنفيذي</p>
+                <h4>رهف المطرفي</h4>
             </div>
         </div>
         <div class="team-member">
             <div class="member-image">👩‍💼</div>
             <div class="member-info">
-                <h4>فاطمة الدوسري</h4>
-                <p>مدير العمليات</p>
-            </div>
-        </div>
-        <div class="team-member">
-            <div class="member-image">👨‍💻</div>
-            <div class="member-info">
-                <h4>محمد القحطاني</h4>
-                <p>مدير التطوير</p>
+                <h4>جود البركة</h4>
             </div>
         </div>
         <div class="team-member">
             <div class="member-image">👩‍💼</div>
             <div class="member-info">
-                <h4>سارة العتيبي</h4>
-                <p>مدير خدمة العملاء</p>
+                <h4>سارة السحيباني</h4>
+            </div>
+        </div>
+        <div class="team-member">
+            <div class="member-image">👩‍💼</div>
+            <div class="member-info">
+                <h4>دانة الحميدي</h4>
             </div>
         </div>
     </div>
@@ -256,20 +273,20 @@
     <h2 class="section-title">إحصائياتنا</h2>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; text-align: center;">
         <div>
-            <div style="font-size: 36px; font-weight: 700; color: var(--primary-green); margin-bottom: 10px;">5000+</div>
+            <div style="font-size: 36px; font-weight: 700; color: var(--primary-green); margin-bottom: 10px;">{{ $totalWorkers }}+</div>
             <p style="color: var(--light-text);">عامل معتمد</p>
         </div>
         <div>
-            <div style="font-size: 36px; font-weight: 700; color: var(--primary-green); margin-bottom: 10px;">1000+</div>
+            <div style="font-size: 36px; font-weight: 700; color: var(--primary-green); margin-bottom: 10px;">{{ $totalFarmers }}+</div>
             <p style="color: var(--light-text);">مزرعة مسجلة</p>
         </div>
         <div>
-            <div style="font-size: 36px; font-weight: 700; color: var(--primary-green); margin-bottom: 10px;">10000+</div>
+            <div style="font-size: 36px; font-weight: 700; color: var(--primary-green); margin-bottom: 10px;">{{ $completedRequests }}+</div>
             <p style="color: var(--light-text);">طلب منجز</p>
         </div>
         <div>
-            <div style="font-size: 36px; font-weight: 700; color: var(--primary-green); margin-bottom: 10px;">98%</div>
-            <p style="color: var(--light-text);">رضا العملاء</p>
+            <div style="font-size: 36px; font-weight: 700; color: var(--primary-green); margin-bottom: 10px;">{{ $totalServices }}+</div>
+            <p style="color: var(--light-text);">خدمة نشطة</p>
         </div>
     </div>
 </section>

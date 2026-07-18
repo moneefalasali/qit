@@ -5,21 +5,38 @@
 @section('styles')
 <style>
     .services-hero {
-        background: #243f13;
+        position: relative;
+        background: url('/images/images.jpg') center/cover no-repeat;
         color: white;
         padding: 80px 20px;
         text-align: center;
+        overflow: hidden;
+    }
+
+    .services-hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, rgba(132, 107, 10, 0.9) 0%, rgba(160, 140, 8, 0.7) 45%, rgba(255, 255, 255, 0.20) 100%);
+        z-index: 0;
+    }
+
+    .services-hero > * {
+        position: relative;
+        z-index: 1;
     }
 
     .services-hero h1 {
         font-size: 42px;
         margin-bottom: 15px;
         font-weight: 800;
+        color: #ffffff;
     }
 
     .services-hero p {
         font-size: 18px;
-        color: #e8dcc8;
+        color: #e9d7a6;
+        font-weight: 600;
     }
 
     .services-section {
@@ -30,7 +47,7 @@
 
     .section-title {
         font-size: 32px;
-        color: var(--primary-green);
+        color: #000000;
         margin-bottom: 40px;
         text-align: center;
         font-weight: 700;
@@ -59,11 +76,8 @@
     .service-image {
         width: 100%;
         height: 200px;
-        background: linear-gradient(135deg, var(--primary-green), var(--light-green));
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 60px;
+        object-fit: cover;
+        display: block;
     }
 
     .service-content {
@@ -123,6 +137,10 @@
         padding: 40px;
         border-radius: 10px;
         margin: 60px 0;
+    }
+
+    .process-section .section-title {
+        color: #000000;
     }
 
     .process-grid {
@@ -186,7 +204,7 @@
     <h2 class="section-title">الخدمات الرئيسية</h2>
     <div class="services-grid">
         <div class="service-card">
-            <div class="service-image">🌴</div>
+            <img src="{{ asset('images/date-harvest-1.jpg') }}" alt="جني التمور" class="service-image" loading="lazy">
             <div class="service-content">
                 <h3>جني التمور</h3>
                 <p>خدمة متخصصة في جني التمور بكفاءة واحترافية عالية</p>
@@ -201,7 +219,7 @@
         </div>
 
         <div class="service-card">
-            <div class="service-image">🌺</div>
+            <img src="{{ asset('images/date-palm-plantation.jpg') }}" alt="تلقيح النخيل" class="service-image" loading="lazy">
             <div class="service-content">
                 <h3>تلقيح النخيل</h3>
                 <p>خدمات تلقيح النخيل بأحدث الطرق والتقنيات</p>
@@ -216,7 +234,7 @@
         </div>
 
         <div class="service-card">
-            <div class="service-image">✂️</div>
+            <img src="{{ asset('images/palm-tree-farm.jpg') }}" alt="تقليم النخيل" class="service-image" loading="lazy">
             <div class="service-content">
                 <h3>تقليم النخيل</h3>
                 <p>تقليم احترافي لضمان صحة وإنتاجية النخيل</p>
@@ -231,7 +249,7 @@
         </div>
 
         <div class="service-card">
-            <div class="service-image">💧</div>
+            <img src="{{ asset('images/palm-grove.jpg') }}" alt="الري والعناية" class="service-image" loading="lazy">
             <div class="service-content">
                 <h3>الري والعناية</h3>
                 <p>خدمات الري والعناية الدورية للنخيل</p>
@@ -246,7 +264,7 @@
         </div>
 
         <div class="service-card">
-            <div class="service-image">📦</div>
+            <img src="{{ asset('images/close-up-of-dates-loaded-on-thumbnail-55389.webp') }}" alt="الفرز والتعبئة" class="service-image" loading="lazy">
             <div class="service-content">
                 <h3>الفرز والتعبئة</h3>
                 <p>فرز وتعبئة التمور بمعايير جودة عالية</p>
@@ -261,7 +279,7 @@
         </div>
 
         <div class="service-card">
-            <div class="service-image">🚚</div>
+            <img src="{{ asset('images/date-harvest-machine.jpg') }}" alt="تحميل ونقل" class="service-image" loading="lazy">
             <div class="service-content">
                 <h3>تحميل ونقل</h3>
                 <p>خدمات تحميل ونقل المحصول بأمان</p>

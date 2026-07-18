@@ -118,7 +118,7 @@
 
     @media (max-width: 991.98px) {
         .auth-divider {
-            display: none;
+            display: none !important;
         }
 
         .auth-split {

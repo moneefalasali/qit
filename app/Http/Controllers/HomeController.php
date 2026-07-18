@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Farmer;
+use App\Models\LaborRequest;
 use App\Models\Service;
 use App\Models\Worker;
 use Illuminate\Http\Request;
@@ -22,12 +23,20 @@ class HomeController extends Controller
 
         public function about()
         {
-            return view('pages.about');
+            $totalFarmers = Farmer::count();
+            $totalWorkers = Worker::count();
+            $totalServices = Service::where('is_active', true)->count();
+            $completedRequests = LaborRequest::where('status', 'completed')->count();
+
+            return view('pages.about', compact('totalFarmers', 'totalWorkers', 'totalServices', 'completedRequests'));
         }
 
         public function services()
         {
-            return view('pages.services');
+            $totalServices = Service::where('is_active', true)->count();
+            $totalWorkers = Worker::count();
+
+            return view('pages.services', compact('totalServices', 'totalWorkers'));
         }
 
         public function contact()
