@@ -2,12 +2,12 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="hero-section position-relative overflow-hidden py-4" style="background: url('/images/images.jpg') center/cover no-repeat; background-position: center 35%; min-height: 300px;">
+<section class="hero-section position-relative overflow-hidden py-4" style="background: url('/images/hero_palm_farm.jpg') center/cover no-repeat; background-position: center 35%; min-height: 80px;">
     <div class="hero-overlay" aria-hidden="true"></div>
     <div class="container position-relative py-4">
         <div class="row align-items-center">
             <div class="col-lg-7 ms-auto text-end">
-                <div class="hero-card p-3 p-lg-4 rounded-4 shadow-lg" style="background: rgba(255,255,255,0.88); backdrop-filter: blur(2px); border: 1px solid rgba(245, 243, 240, 0.8);">
+                <div class="hero-card p-3 p-lg-4 rounded-4 shadow-lg" style="background:rgba(255,255,255,0.88); backdrop-filter: blur(2px); border: 1px solid rgba(245, 243, 240, 0.8);">
                     <h1 class="display-6 fw-bold mb-2" style="color: #5e3d03;">{{ __('messages.app_name') }}</h1>
                     <h2 class="fs-5 fw-bold mb-3" style="color: #284915;">{{ __('messages.welcome') }}</h2>
                     <p class="mb-3 text-dark">{{ __('messages.about_text') }}</p>
@@ -15,7 +15,7 @@
                         <a href="{{ route('request-labor') }}" class="btn btn-primary-qitaf btn-sm px-3 py-2">
                             <i class="fas fa-users ms-2"></i> {{ __('messages.request_labor') }}
                         </a>
-                        <a href="{{ route('register-worker') }}" class="btn btn-sm px-3 py-2" style="background-color: #d4c5b0; color: #2d5a27; border: none; font-weight: 600;">
+                        <a href="{{ route('register-worker') }}" class="btn btn-sm px-3 py-2" style="background-color: #c38d03; color: #fcfffb; border: none; font-weight: 600;">
                             <i class="fas fa-user-plus ms-2"></i> {{ __('messages.register_worker') }}
                         </a>
                     </div>
@@ -65,12 +65,11 @@
         <div class="row g-4">
             @php
                 $serviceImages = [
-                    'حصاد المزروعات' => '/images/date-harvest-1.jpg',
-                    'ري المزروعات' => '/images/palm-grove.jpg',
-                    'تنظيف الأرض' => '/images/palm-tree-farm.jpg',
-                    'رش المبيدات' => '/images/date-palm-plantation.jpg',
-                    'نقل المنتجات' => '/images/date-harvest-machine.jpg',
-                    'العناية بالحيوانات' => '/images/farm-workers.jpg',
+                    'حصاد المزروعات' => '/images/date_harvesting.jpg',
+                    'ري المزروعات' => '/images/palm_irrigation.jpg',
+                    'تنظيف الأرض' => '/images/farm-workers.jpg',
+                    'رش المبيدات' => '/images/farm_worker_portrait.jpg',
+                    'نقل المنتجات' => '/images/date_transport.jpg',
                 ];
             @endphp
             @foreach ($services as $service)
@@ -116,7 +115,7 @@
                     <div class="d-flex align-items-center justify-content-center gap-4">
                         <div>
                             <h2 class="fw-bold display-5 mb-0" style="color: #2d5a27;">{{ $totalFarmers }}+</h2>
-                            <p class="text-muted mb-0">{{ __('messages.about') }}</p>
+                            <p class="text-muted mb-0">{{ __('messages.farm') }}</p>
                         </div>
                         <div class="fs-3 text-secondary"><i class="fas fa-tractor"></i></div>
                     </div>

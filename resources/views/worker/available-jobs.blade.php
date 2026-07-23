@@ -47,7 +47,7 @@
     }
 
     .search-box button:hover {
-        background-color: var(--light-green);
+        background-color: goldenrod;
     }
 
     .jobs-grid {
@@ -159,7 +159,7 @@
     }
 
     .job-btn-apply:hover {
-        background-color: var(--light-green);
+        background-color: goldenrod;
     }
 
     .job-btn-view {

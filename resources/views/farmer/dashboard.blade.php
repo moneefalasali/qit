@@ -50,8 +50,9 @@
                     <ul class="list-unstyled mb-0">
                         <li class="mb-3"><a href="#" class="text-white text-decoration-none d-flex align-items-center gap-3"><i class="fas fa-th-large"></i> لوحة التحكم</a></li>
                         <li class="mb-3"><a href="{{ route('farmer.requests') }}" class="text-white text-decoration-none d-flex align-items-center gap-3 opacity-75"><i class="fas fa-clipboard-list"></i> طلباتي</a></li>
-                        <li class="mb-3"><a href="#" class="text-white text-decoration-none d-flex align-items-center gap-3 opacity-75"><i class="fas fa-users"></i> العمالة</a></li>
-                        <li class="mb-3"><a href="#" class="text-white text-decoration-none d-flex align-items-center gap-3 opacity-75"><i class="fas fa-bell"></i> الإشعارات</a></li>
+                        <li class="mb-3"><a href="{{ route('farmer.workers') }}" class="text-white text-decoration-none d-flex align-items-center gap-3 opacity-75"><i class="fas fa-users"></i> العمالة</a></li>
+                        <li class="mb-3"><a href="{{ route('farmer.notifications') }}" class="text-white text-decoration-none d-flex align-items-center gap-3 opacity-75"><i class="fas fa-bell"></i> الإشعارات</a></li>
+                        <li class="mb-3"><a href="{{ route('payment.history') }}" class="text-white text-decoration-none d-flex align-items-center gap-3 opacity-75"><i class="fas fa-receipt"></i> المدفوعات</a></li>
                         <li class="mb-0"><a href="{{ route('farmer.settings') }}" class="text-white text-decoration-none d-flex align-items-center gap-3 opacity-75"><i class="fas fa-cog"></i> الإعدادات</a></li>
                     </ul>
                 </div>
@@ -141,7 +142,7 @@
                                                         'approved' => 'موافق عليه',
                                                         'in_progress' => 'قيد التنفيذ',
                                                         'completed' => 'مكتمل',
-                                                        default => 'ملغي',
+                                                        default => 'انتظار الدفع',
                                                     };
                                                 @endphp
                                                 <span class="badge rounded-pill {{ $statusClass }} px-3 py-2">● {{ $statusLabel }}</span>

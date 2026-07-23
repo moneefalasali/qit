@@ -32,7 +32,7 @@
     }
 
     .dashboard-header a:hover {
-        background-color: var(--light-green);
+        background-color: goldenrod;
     }
 
     .stats-grid {
@@ -189,6 +189,19 @@
         background-color: #2f6d3a;
     }
 
+    .notification-card {
+        background-color: #e6f4e5;
+        border-left: 5px solid var(--primary-green);
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        color: #234b23;
+    }
+
+    .notification-card:hover {
+        background-color: #d6ecd5;
+    }
+
     .empty-state {
         text-align: center;
         padding: 40px 20px;
@@ -224,6 +237,16 @@
     <div class="dashboard-header">
         <h1>لوحة تحكم العامل</h1>
         <a href="{{ route('worker.jobs') }}">+ البحث عن وظائف</a>
+    </div>
+
+    <div class="notification-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:15px; flex-wrap:wrap;">
+            <div>
+                <strong>لديك {{ $unreadNotifications }} إشعار{{ $unreadNotifications === 1 ? '' : 'ات' }} جديدة</strong>
+                <p style="margin:0; color:#234b23;">تحقق من الإشعارات المهمة المتعلقة بطلباتك وحالة التوثيق.</p>
+            </div>
+            <a href="{{ route('worker.notifications') }}" class="quick-action-btn" style="padding: 10px 18px;">عرض الإشعارات</a>
+        </div>
     </div>
 
     <div class="document-alert">

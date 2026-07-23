@@ -50,9 +50,9 @@
                 <h2 class="fw-bold m-0" style="color: #2d5a27;">@yield('page-title', __('messages.dashboard'))</h2>
             </div>
             <div class="d-flex align-items-center gap-3">
-                <select class="form-select form-select-sm" style="min-width: 110px;" onchange="window.location.href='{{ route('locale.set', ['locale' => '__LOCALE__']) }}'.replace('__LOCALE__', this.value)">
-                    <option value="ar" {{ app()->getLocale() === 'ar' ? 'selected' : '' }}>العربية</option>
-                    <option value="en" {{ app()->getLocale() === 'en' ? 'selected' : '' }}>English</option>
+                <select class="form-select form-select-sm" style="min-width: 110px;" onchange="window.location.href=this.value">
+                    <option value="{{ route('locale.set', ['locale' => 'ar']) }}" {{ app()->getLocale() === 'ar' ? 'selected' : '' }}>العربية</option>
+                    <option value="{{ route('locale.set', ['locale' => 'en']) }}" {{ app()->getLocale() === 'en' ? 'selected' : '' }}>English</option>
                 </select>
                 <div class="d-flex align-items-center gap-2">
                     <div class="text-end d-none d-md-block">
@@ -74,13 +74,13 @@
                         <p class="small text-muted mt-2 mb-0">{{ __('messages.about_text') }}</p>
                     </div>
                     <ul class="nav flex-column gap-2">
-                        <li><a href="{{ route('admin.dashboard') }}" class="admin-nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i class="fas fa-chart-line ms-2"></i> {{ __('messages.dashboard') }}</a></li>
-                        <li><a href="{{ route('admin.farmers') }}" class="admin-nav-link {{ request()->routeIs('admin.farmers') ? 'active' : '' }}"><i class="fas fa-tractor ms-2"></i> {{ __('messages.about') }}</a></li>
-                        <li><a href="{{ route('admin.workers') }}" class="admin-nav-link {{ request()->routeIs('admin.workers') ? 'active' : '' }}"><i class="fas fa-users-cog ms-2"></i> {{ __('messages.register_worker') }}</a></li>
-                        <li><a href="{{ route('admin.requests') }}" class="admin-nav-link {{ request()->routeIs('admin.requests') ? 'active' : '' }}"><i class="fas fa-clipboard-list ms-2"></i> {{ __('messages.request_labor') }}</a></li>
-                        <li><a href="{{ route('admin.services') }}" class="admin-nav-link {{ request()->routeIs('admin.services') ? 'active' : '' }}"><i class="fas fa-concierge-bell ms-2"></i> {{ __('messages.services') }}</a></li>
-                        <li><a href="{{ route('admin.reports') }}" class="admin-nav-link {{ request()->routeIs('admin.reports') ? 'active' : '' }}"><i class="fas fa-file-alt ms-2"></i> {{ __('messages.contact_us') }}</a></li>
-                        <li><a href="{{ route('admin.activity-log') }}" class="admin-nav-link {{ request()->routeIs('admin.activity-log') ? 'active' : '' }}"><i class="fas fa-history ms-2"></i> {{ __('messages.follow_us') }}</a></li>
+                        <li><a href="{{ route('admin.dashboard') }}" class="admin-nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"><i class="fas fa-chart-line ms-2"></i> لوحة التحكم</a></li>
+                        <li><a href="{{ route('admin.farmers') }}" class="admin-nav-link {{ request()->routeIs('admin.farmers') ? 'active' : '' }}"><i class="fas fa-tractor ms-2"></i> إدارة المزارعين</a></li>
+                        <li><a href="{{ route('admin.workers') }}" class="admin-nav-link {{ request()->routeIs('admin.workers') ? 'active' : '' }}"><i class="fas fa-users-cog ms-2"></i> إدارة العمال</a></li>
+                        <li><a href="{{ route('admin.requests') }}" class="admin-nav-link {{ request()->routeIs('admin.requests') ? 'active' : '' }}"><i class="fas fa-clipboard-list ms-2"></i> إدارة الطلبات</a></li>
+                        <li><a href="{{ route('admin.services') }}" class="admin-nav-link {{ request()->routeIs('admin.services') ? 'active' : '' }}"><i class="fas fa-concierge-bell ms-2"></i> إدارة الخدمات</a></li>
+                        <li><a href="{{ route('admin.reports') }}" class="admin-nav-link {{ request()->routeIs('admin.reports') ? 'active' : '' }}"><i class="fas fa-file-alt ms-2"></i> التقارير</a></li>
+                        <li><a href="{{ route('admin.activity-log') }}" class="admin-nav-link {{ request()->routeIs('admin.activity-log') ? 'active' : '' }}"><i class="fas fa-history ms-2"></i> سجل النشاط</a></li>
                         <li class="mt-4">
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf

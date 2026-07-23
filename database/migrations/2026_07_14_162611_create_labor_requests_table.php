@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->text('description')->nullable();
             $table->decimal('daily_wage', 10, 2)->nullable();
-            $table->enum('status', ['pending', 'approved', 'in_progress', 'completed', 'cancelled'])->default('pending');
+            $table->enum('status', ['pending', 'approved', 'waiting_for_payment', 'in_progress', 'completed', 'cancelled'])->default('pending');
             $table->integer('assigned_workers')->default(0);
             $table->text('notes')->nullable();
             $table->timestamps();

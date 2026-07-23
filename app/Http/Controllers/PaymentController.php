@@ -30,8 +30,12 @@ class PaymentController extends Controller
             return redirect()->back()->with('error', 'غير مصرح لك بالوصول إلى هذا الطلب');
         }
 
-        $amount = $this->calculateRequestAmount($laborRequest);
-        return view('payment.form', compact('laborRequest', 'amount'));
+        $amount = abs($this->calculateRequestAmount($laborRequest));
+        $commissionRate = 0.065;
+        $commissionAmount = round($amount * $commissionRate, 2);
+        $finalAmount = round($amount + $commissionAmount, 2);
+
+        return view('payment.form', compact('laborRequest', 'amount', 'commissionAmount', 'finalAmount', 'commissionRate'));
     }
 
     /**
@@ -42,6 +46,9 @@ class PaymentController extends Controller
         $request->validate([
             'labor_request_id' => 'required|exists:labor_requests,id',
             'payment_method' => 'required|in:credit_card,debit_card,apple_pay,google_pay',
+            'agree_terms' => 'accepted',
+        ],[
+            'agree_terms.accepted' => 'يجب الموافقة على شروط الدفع وسياسة الخصوصية قبل المتابعة.',
         ]);
 
         $laborRequest = LaborRequest::findOrFail($request->labor_request_id);
@@ -50,12 +57,15 @@ class PaymentController extends Controller
             return redirect()->back()->with('error', 'غير مصرح لك بالوصول إلى هذا الطلب');
         }
 
-        $amount = $this->calculateRequestAmount($laborRequest);
+        $amount = abs($this->calculateRequestAmount($laborRequest));
+        $commissionRate = 0.065;
+        $commissionAmount = round($amount * $commissionRate, 2);
+        $finalAmount = round($amount + $commissionAmount, 2);
 
         $payment = Payment::create([
             'labor_request_id' => $laborRequest->id,
             'user_id' => auth()->id(),
-            'amount' => $amount,
+            'amount' => $finalAmount,
             'currency' => 'SAR',
             'status' => 'pending',
             'payment_method' => $request->payment_method,
@@ -72,7 +82,7 @@ class PaymentController extends Controller
                 ]),
             ]);
 
-            return view('payment.form', compact('laborRequest', 'amount'))
+            return view('payment.form', compact('laborRequest', 'amount', 'commissionAmount', 'finalAmount', 'commissionRate'))
                 ->with('payment_error', 'لم يتم تهيئة بوابة الدفع بعد. أضف بيانات PayTabs في ملف .env للمتابعة إلى دفع حقيقي.')
                 ->with('selected_method', $request->payment_method);
         }
@@ -83,7 +93,7 @@ class PaymentController extends Controller
             'tran_class' => 'ecom',
             'cart_id' => 'payment_' . $payment->id,
             'cart_currency' => 'SAR',
-            'cart_amount' => (float)$amount,
+            'cart_amount' => (float)$finalAmount,
             'cart_description' => 'طلب عمالة: ' . $laborRequest->service_type,
             'customer_details' => [
                 'name' => auth()->user()->name,
@@ -169,7 +179,16 @@ class PaymentController extends Controller
                         'response_data' => json_encode($responseData),
                     ]);
 
-                    $payment->laborRequest->update(['status' => 'approved']);
+                    $payment->laborRequest->update(['status' => 'in_progress']);
+
+                    if (method_exists($payment->laborRequest, 'notifications')) {
+                        $payment->laborRequest->notifications()->create([
+                            'user_id' => auth()->id(),
+                            'title' => 'تمت معالجة الدفع',
+                            'message' => 'تمت عملية الدفع بنجاح وسيبدأ التنفيذ قريباً.',
+                            'is_read' => false,
+                        ]);
+                    }
 
                     return redirect()->route('farmer.requests')->with('success', 'تم الدفع بنجاح!');
                 } else {
@@ -200,7 +219,7 @@ class PaymentController extends Controller
             ? $laborRequest->end_date->diffInDays($laborRequest->start_date) + 1
             : 1;
 
-        return $laborRequest->daily_wage * $laborRequest->number_of_workers * $days;
+        return abs($laborRequest->daily_wage * $laborRequest->number_of_workers * $days);
     }
 
     /**

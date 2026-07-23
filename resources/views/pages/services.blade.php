@@ -6,10 +6,10 @@
 <style>
     .services-hero {
         position: relative;
-        background: url('/images/images.jpg') center/cover no-repeat;
+        background: url('/images/hero_palm_farm.jpg') center/cover no-repeat;
         color: white;
-        padding: 80px 20px;
-        text-align: center;
+        padding: 20px 20px;
+        text-align: right;
         overflow: hidden;
     }
 
@@ -17,7 +17,7 @@
         content: '';
         position: absolute;
         inset: 0;
-        background: linear-gradient(90deg, rgba(132, 107, 10, 0.9) 0%, rgba(160, 140, 8, 0.7) 45%, rgba(255, 255, 255, 0.20) 100%);
+        background: linear-gradient(-20deg, rgba(254, 252, 240, 0.9) 0%, rgba(254, 253, 245, 0.7) 45%, rgba(247, 239, 239, 0.2) 50%);
         z-index: 0;
     }
 
@@ -30,12 +30,12 @@
         font-size: 42px;
         margin-bottom: 15px;
         font-weight: 800;
-        color: #ffffff;
+        color: #036403;
     }
 
     .services-hero p {
         font-size: 18px;
-        color: #e9d7a6;
+        color: #d89f02;
         font-weight: 600;
     }
 
@@ -47,7 +47,7 @@
 
     .section-title {
         font-size: 32px;
-        color: #000000;
+        color: #b38d06;
         margin-bottom: 40px;
         text-align: center;
         font-weight: 700;
@@ -119,7 +119,7 @@
 
     .service-btn {
         display: inline-block;
-        background-color: var(--primary-green);
+        background-color:goldenrod;
         color: white;
         padding: 10px 20px;
         border-radius: 5px;
@@ -129,7 +129,7 @@
     }
 
     .service-btn:hover {
-        background-color: var(--light-green);
+        background-color:green;
     }
 
     .process-section {
@@ -148,10 +148,12 @@
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 30px;
         margin-top: 40px;
+        
     }
 
     .process-step {
         text-align: center;
+        packground-color: goldenrod;
     }
 
     .step-number {
@@ -204,7 +206,7 @@
     <h2 class="section-title">الخدمات الرئيسية</h2>
     <div class="services-grid">
         <div class="service-card">
-            <img src="{{ asset('images/date-harvest-1.jpg') }}" alt="جني التمور" class="service-image" loading="lazy">
+            <img src="{{ asset('images/date_harvesting.jpg') }}" alt="جني التمور" class="service-image" loading="lazy">
             <div class="service-content">
                 <h3>جني التمور</h3>
                 <p>خدمة متخصصة في جني التمور بكفاءة واحترافية عالية</p>
@@ -219,7 +221,7 @@
         </div>
 
         <div class="service-card">
-            <img src="{{ asset('images/date-palm-plantation.jpg') }}" alt="تلقيح النخيل" class="service-image" loading="lazy">
+            <img src="{{ asset('images/palm_pollination.jpg') }}" alt="تلقيح النخيل" class="service-image" loading="lazy">
             <div class="service-content">
                 <h3>تلقيح النخيل</h3>
                 <p>خدمات تلقيح النخيل بأحدث الطرق والتقنيات</p>
@@ -234,7 +236,7 @@
         </div>
 
         <div class="service-card">
-            <img src="{{ asset('images/palm-tree-farm.jpg') }}" alt="تقليم النخيل" class="service-image" loading="lazy">
+            <img src="{{ asset('images/palm_pruning.jpg') }}" alt="تقليم النخيل" class="service-image" loading="lazy">
             <div class="service-content">
                 <h3>تقليم النخيل</h3>
                 <p>تقليم احترافي لضمان صحة وإنتاجية النخيل</p>
@@ -249,7 +251,7 @@
         </div>
 
         <div class="service-card">
-            <img src="{{ asset('images/palm-grove.jpg') }}" alt="الري والعناية" class="service-image" loading="lazy">
+            <img src="{{ asset('images/palm_irrigation.jpg') }}" alt="الري والعناية" class="service-image" loading="lazy">
             <div class="service-content">
                 <h3>الري والعناية</h3>
                 <p>خدمات الري والعناية الدورية للنخيل</p>
@@ -264,7 +266,7 @@
         </div>
 
         <div class="service-card">
-            <img src="{{ asset('images/close-up-of-dates-loaded-on-thumbnail-55389.webp') }}" alt="الفرز والتعبئة" class="service-image" loading="lazy">
+            <img src="{{ asset('images/date_sorting.jpg') }}" alt="الفرز والتعبئة" class="service-image" loading="lazy">
             <div class="service-content">
                 <h3>الفرز والتعبئة</h3>
                 <p>فرز وتعبئة التمور بمعايير جودة عالية</p>
@@ -279,7 +281,7 @@
         </div>
 
         <div class="service-card">
-            <img src="{{ asset('images/date-harvest-machine.jpg') }}" alt="تحميل ونقل" class="service-image" loading="lazy">
+            <img src="{{ asset('images/date_transport.jpg') }}" alt="تحميل ونقل" class="service-image" loading="lazy">
             <div class="service-content">
                 <h3>تحميل ونقل</h3>
                 <p>خدمات تحميل ونقل المحصول بأمان</p>

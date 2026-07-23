@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Farmer;
 use App\Models\Worker;
 use App\Models\LaborRequest;
+use App\Models\Notification;
 use App\Models\Service;
 
 class AdminController extends Controller
@@ -51,9 +52,26 @@ class AdminController extends Controller
             return back()->with('success', 'تم رفض العامل!');
         }
 
-        public function requests()
-        {
-            $requests = LaborRequest::with('farmer')->paginate(15);
+public function requests(Request $request)
+    {
+        $query = LaborRequest::with('farmer.user')->latest();
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('search')) {
+            $search = trim($request->search);
+            $query->where(function ($q) use ($search) {
+                $q->where('service_type', 'like', "%{$search}%")
+                    ->orWhereHas('farmer.user', function ($userQuery) use ($search) {
+                        $userQuery->where('name', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        $requests = $query->paginate(15)->withQueryString();
+
             return view('admin.requests', compact('requests'));
         }
 
@@ -85,10 +103,29 @@ class AdminController extends Controller
 
         public function updateRequestStatus(Request $request, $id)
         {
+            $request->validate([
+                'status' => 'required|in:pending,approved,waiting_for_payment,in_progress,completed,cancelled',
+            ]);
+
             $requestData = LaborRequest::findOrFail($id);
-            $requestData->update(['status' => $request->status]);
+            $nextStatus = $request->status;
+
+            if ($requestData->status === 'pending' && $nextStatus === 'approved') {
+                $nextStatus = 'waiting_for_payment';
+            }
+
+            $requestData->update(['status' => $nextStatus]);
 
             return back()->with('success', 'تم تحديث حالة الطلب بنجاح');
+        }
+
+        public function notifications()
+        {
+            $notifications = Notification::where('user_id', auth()->id())
+                ->orderByDesc('created_at')
+                ->paginate(15);
+
+            return view('admin.notifications', compact('notifications'));
         }
 
         public function activityLog()

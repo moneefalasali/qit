@@ -2,16 +2,14 @@
 
 @section('content')
 <div class="container-fluid p-0 overflow-hidden" style="min-height: calc(100vh - 80px);">
-    <div class="auth-split row g-0 h-100 flex-lg-row-reverse">
+    <div class="auth-split row g-0 h-100 flex-lg-row">
         <!-- Right Side Image -->
-        <div class="col-lg-6 d-none d-lg-block position-relative order-lg-2">
-            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: url('/images/date-palm-plantation.jpg') center/cover no-repeat;"></div>
+        <div class="col-lg-6 d-none d-lg-block position-relative">
+            <div class="position-absolute top-0 start-0 w-100 h-100" style="background: url('/images/22.png') center/cover no-repeat;"></div>
         </div>
 
-        <div class="auth-divider" aria-hidden="true"></div>
-
         <!-- Left Side Form -->
-        <div class="col-lg-6 d-flex align-items-center justify-content-center bg-white py-5 order-lg-1">
+        <div class="col-lg-6 d-flex align-items-center justify-content-center bg-white py-5">
             <div class="w-100 px-4" style="max-width: 500px;">
                 <div class="text-center mb-5">
                     <img src="{{ asset('logo.png') }}" alt="Logo" class="mb-4" style="height: 120px;">
@@ -28,7 +26,7 @@
                         <label for="email" class="form-label text-secondary fw-bold">البريد الإلكتروني أو رقم الجوال</label>
                         <div class="input-group">
                             <span class="input-group-text bg-light border-start-0"><i class="far fa-user text-muted"></i></span>
-                            <input type="email" class="form-control bg-light border-end-0 @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" placeholder="أدخل بريدك الإلكتروني أو رقم جوالك" required>
+                            <input type="email" class="form-control bg-light border-end-0 @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" placeholder="أدخل بريدك الإلكتروني" required>
                         </div>
                         @error('email')
                             <div class="text-danger small mt-1">{{ $message }}</div>

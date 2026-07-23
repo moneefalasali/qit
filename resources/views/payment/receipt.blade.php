@@ -124,7 +124,7 @@
     }
 
     .action-btn-print:hover {
-        background-color: var(--light-green);
+        background-color: goldenrod;
     }
 
     .action-btn-back {

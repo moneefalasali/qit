@@ -32,7 +32,7 @@
     }
 
     .page-header a:hover {
-        background-color: var(--light-green);
+        background-color: goldenrod;
     }
 
     .filters {
@@ -88,7 +88,7 @@
     }
 
     .table tbody tr:hover {
-        background-color: #f9f7f4;
+        background-color: #b67008;
     }
 
     .status-badge {
@@ -109,6 +109,11 @@
         color: #155724;
     }
 
+    .status-waiting_for_payment {
+        background-color: #e2e3e5;
+        color: #383d41;
+    }
+
     .status-in-progress {
         background-color: #d1ecf1;
         color: #0c5460;
@@ -117,6 +122,11 @@
     .status-completed {
         background-color: #d4edda;
         color: #155724;
+    }
+
+    .status-cancelled {
+        background-color: #f8d7da;
+        color: #721c24;
     }
 
     .action-buttons {
@@ -141,7 +151,7 @@
     }
 
     .action-btn-view:hover {
-        background-color: var(--light-green);
+        background-color: goldenrod;
     }
 
     .action-btn-edit {
@@ -233,11 +243,12 @@
     @endif
 
     <div class="filters">
-        <button class="filter-btn active">الكل</button>
-        <button class="filter-btn">قيد الانتظار</button>
-        <button class="filter-btn">موافق عليه</button>
-        <button class="filter-btn">قيد التنفيذ</button>
-        <button class="filter-btn">منجز</button>
+        <span class="filter-btn active">الكل</span>
+        <span class="filter-btn">قيد المراجعة</span>
+        <span class="filter-btn">موافق عليه</span>
+        <span class="filter-btn">في انتظار الدفع</span>
+        <span class="filter-btn">قيد التنفيذ</span>
+        <span class="filter-btn">مكتمل</span>
     </div>
 
     @if ($requests->count() > 0)
@@ -261,23 +272,15 @@
                             <td>{{ $request->daily_wage }} ر.س</td>
                             <td>{{ $request->start_date->format('Y-m-d') }}</td>
                             <td>
-                                <span class="status-badge status-{{ $request->status }}">
-                                    @if ($request->status === 'pending')
-                                        قيد الانتظار
-                                    @elseif ($request->status === 'approved')
-                                        موافق عليه
-                                    @elseif ($request->status === 'in_progress')
-                                        قيد التنفيذ
-                                    @else
-                                        منجز
-                                    @endif
-                                </span>
+                                <span class="status-badge status-{{ $request->status }}">{{ $request->status_label }}</span>
                             </td>
                             <td>
                                 <div class="action-buttons">
                                     <a href="{{ route('farmer.request.show', $request->id) }}" class="action-btn action-btn-view">عرض</a>
-                                    @if($request->status === 'pending')
+                                    @if(in_array($request->status, ['approved', 'waiting_for_payment']))
                                         <a href="{{ route('payment.form', $request->id) }}" class="action-btn" style="background-color: #ffc107; color: #000;">دفع</a>
+                                    @elseif($request->status === 'pending')
+                                        <span class="action-btn" style="background-color: #f1f3f5; color: #6c757d; cursor: default;">بانتظار المراجعة</span>
                                     @endif
                                 </div>
                             </td>

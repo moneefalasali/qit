@@ -66,4 +66,30 @@ class LaborRequest extends Model
     {
         return $this->status === 'cancelled';
     }
+
+    public function getStatusLabelAttribute(): string
+    {
+        return match ($this->status) {
+            'pending' => 'قيد المراجعة',
+            'approved' => 'تمت الموافقة',
+            'waiting_for_payment' => 'في انتظار الدفع',
+            'in_progress' => 'قيد التنفيذ',
+            'completed' => 'مكتمل',
+            'cancelled' => 'ملغي',
+            default => 'جديد',
+        };
+    }
+
+    public function getStatusBadgeClassAttribute(): string
+    {
+        return match ($this->status) {
+            'pending' => 'badge bg-warning-subtle text-warning',
+            'approved' => 'badge bg-info-subtle text-info',
+            'waiting_for_payment' => 'badge bg-secondary-subtle text-secondary',
+            'in_progress' => 'badge bg-primary-subtle text-primary',
+            'completed' => 'badge bg-success-subtle text-success',
+            'cancelled' => 'badge bg-danger-subtle text-danger',
+            default => 'badge bg-light text-dark',
+        };
+    }
 }

@@ -49,6 +49,7 @@
         border-radius: 5px;
         font-family: 'Tajawal', sans-serif;
         font-size: 14px;
+        background-color: #f9f7f4;
     }
 
     .form-group input:focus,
@@ -78,7 +79,7 @@
     }
 
     .submit-btn:hover {
-        background-color: var(--light-green);
+        background-color: goldenrod;
     }
 
     .links {
@@ -184,7 +185,7 @@
         <div class="form-row full">
             <div class="form-group">
                 <label for="role">نوع الحساب</label>
-                <select id="role" name="role" required>
+                <select id="role" name="role" required onchange="toggleNationalIdField()">
                     <option value="">اختر نوع الحساب</option>
                     <option value="farmer" {{ old('role') === 'farmer' ? 'selected' : '' }}>مزارع</option>
                     <option value="worker" {{ old('role') === 'worker' ? 'selected' : '' }}>عامل زراعي</option>
@@ -195,6 +196,21 @@
             </div>
         </div>
 
+        @if(old('role') === 'worker')
+            <div class="form-row full" id="national-id-row">
+                <div class="form-group">
+                    <label for="national_id">رقم الهوية الوطنية</label>
+                    <input type="text" id="national_id" name="national_id" value="{{ old('national_id') }}" placeholder="مطلوب عند تسجيل عامل زراعي">
+                    <small style="color:#6c757d; display:block; margin-top:5px;">رقم الهوية مطلوب عند تسجيل عامل زراعي.</small>
+                    @error('national_id')
+                        <div class="error-message">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+        @else
+            <div class="form-row full" id="national-id-row" style="display:none;"></div>
+        @endif
+
         <button type="submit" class="submit-btn">إنشاء الحساب</button>
 
         <div class="links">
@@ -202,4 +218,15 @@
         </div>
     </form>
 </div>
+
+<script>
+    function toggleNationalIdField() {
+        var role = document.getElementById('role').value;
+        document.getElementById('national-id-row').style.display = role === 'worker' ? 'block' : 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        toggleNationalIdField();
+    });
+</script>
 @endsection

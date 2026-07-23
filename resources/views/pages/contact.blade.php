@@ -59,12 +59,13 @@
         border-radius: 5px;
         font-family: 'Tajawal', sans-serif;
         font-size: 14px;
+        background-color: #f9ebd6;
     }
 
     .form-group input:focus,
     .form-group textarea:focus {
         outline: none;
-        border-color: var(--primary-green);
+        border-color: greenyellow;
         box-shadow: 0 0 5px rgba(45, 80, 22, 0.2);
     }
 
@@ -87,7 +88,7 @@
     }
 
     .submit-btn:hover {
-        background-color: var(--light-green);
+        background-color: goldenrod;
     }
 
     .contact-info {
@@ -136,7 +137,7 @@
     .social-link {
         width: 40px;
         height: 40px;
-        background-color: var(--primary-green);
+        background-color: whitesmoke;
         color: white;
         border-radius: 50%;
         display: flex;
@@ -147,7 +148,7 @@
     }
 
     .social-link:hover {
-        background-color: var(--light-green);
+        background-color: black;
     }
 
     .map-container {
@@ -190,32 +191,45 @@
     <div class="contact-content">
         <div class="contact-form">
             <h2 style="color: var(--primary-green); margin-bottom: 20px;">أرسل لنا رسالة</h2>
-            <form method="POST" action="#">
+
+            @if (session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    @foreach ($errors->all() as $error)
+                        <div>{{ $error }}</div>
+                    @endforeach
+                </div>
+            @endif
+
+            <form method="POST" action="{{ route('contact.send') }}">
                 @csrf
 
                 <div class="form-group">
                     <label for="name">الاسم الكامل</label>
-                    <input type="text" id="name" name="name" required>
+                    <input type="text" id="name" name="name" value="{{ old('name') }}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="email">البريد الإلكتروني</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="email" name="email" value="{{ old('email') }}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="phone">رقم الهاتف</label>
-                    <input type="tel" id="phone" name="phone" required>
+                    <input type="tel" id="phone" name="phone" value="{{ old('phone') }}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="subject">الموضوع</label>
-                    <input type="text" id="subject" name="subject" required>
+                    <input type="text" id="subject" name="subject" value="{{ old('subject') }}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="message">الرسالة</label>
-                    <textarea id="message" name="message" required></textarea>
+                    <textarea id="message" name="message" required>{{ old('message') }}</textarea>
                 </div>
 
                 <button type="submit" class="submit-btn">إرسال الرسالة</button>
@@ -237,8 +251,8 @@
                     <i class="fas fa-phone"></i>
                     رقم الهاتف
                 </h3>
-                <p><a href="tel:+966501234567">+</a></p>
-                <p><a href="tel:+966163334444">+</a></p>
+                <p><a href="tel:+966501234567">+966 50 123 4567</a></p>
+                <p><a href="tel:+966163334444">+966 16 333 4444</a></p>
             </div>
 
             <div class="info-card">
@@ -246,8 +260,8 @@
                     <i class="fas fa-envelope"></i>
                     البريد الإلكتروني
                 </h3>
-                <p><a href="mailto:info@qitafalqassim.sa"></a></p>
-                <p><a href="mailto:support@qitafalqassim.sa"></a></p>
+                <p><a href="mailto:info@qitafalqassim.sa">info@qitafalqassim.sa</a></p>
+                <p><a href="mailto:support@qitafalqassim.sa">support@qitafalqassim.sa</a></p>
             </div>
 
             <div class="info-card">
@@ -255,6 +269,8 @@
                     <i class="fas fa-clock"></i>
                     ساعات العمل
                 </h3>
+                <p>السبت - الخميس: 08:00 صباحاً - 08:00 مساءً</p>
+                <p>الجمعة: 04:00 مساءً - 08:00 مساءً</p>
             </div>
 
             <div class="info-card">
@@ -263,16 +279,16 @@
                     تابعنا
                 </h3>
                 <div class="social-links">
-                    <a href="#" class="social-link" title="Facebook">
+                    <a href="https://www.facebook.com" target="_blank" rel="noopener" class="social-link" title="Facebook">
                         <i class="fab fa-facebook-f"></i>
                     </a>
-                    <a href="#" class="social-link" title="Twitter">
+                    <a href="https://www.twitter.com" target="_blank" rel="noopener" class="social-link" title="Twitter">
                         <i class="fab fa-twitter"></i>
                     </a>
-                    <a href="#" class="social-link" title="Instagram">
+                    <a href="https://www.instagram.com" target="_blank" rel="noopener" class="social-link" title="Instagram">
                         <i class="fab fa-instagram"></i>
                     </a>
-                    <a href="#" class="social-link" title="WhatsApp">
+                    <a href="https://wa.me/966501234567" target="_blank" rel="noopener" class="social-link" title="WhatsApp">
                         <i class="fab fa-whatsapp"></i>
                     </a>
                 </div>

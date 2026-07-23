@@ -6,10 +6,10 @@
 <style>
     .about-hero {
         position: relative;
-        background: url('/images/images.jpg') center/cover no-repeat;
+        background: url('/images/hero_palm_farm.jpg') center/cover no-repeat;
         color: white;
-        padding: 80px 20px;
-        text-align: center;
+        padding: 30px 20px;
+        text-align: right;
         overflow: hidden;
     }
 
@@ -17,7 +17,7 @@
         content: '';
         position: absolute;
         inset: 0;
-        background: linear-gradient(90deg, rgba(132, 107, 10, 0.9) 0%, rgba(160, 140, 8, 0.7) 45%, rgba(255, 255, 255, 0.20) 100%);
+        background: linear-gradient(-20deg, rgba(243, 242, 240, 0.9) 0%, rgba(254, 254, 245, 0.7) 45%, rgba(255, 255, 255, 0.2) 50%);
         z-index: 0;
     }
 
@@ -30,12 +30,12 @@
         font-size: 42px;
         margin-bottom: 15px;
         font-weight: 800;
-        color: #ffffff;
+        color: #067014;
     }
 
     .about-hero p {
         font-size: 18px;
-        color: #e9d7a6;
+        color: #dea405;
         font-weight: 600;
     }
 
@@ -186,7 +186,7 @@
             <p>توفير منصة رقمية تربط مزارعي ومستثمري التمور في منطقة القصيم بمقدمي الخدمات الزراعية المؤهلين عبر مطابقة الطلبات وفق طبيعة الخدمة ومتطلبات التنفيذ، وتنظيم اجراءات الطلب ومتابعتها حتى اكتمالها، للمساهمة في رفع كفاءة تقديم الخدمات الزراعية وتحقيق قيمة مضافة للمزارعين ومقدمي الخدمات.</p>
         </div>
         <div class="about-image">
-            <img src="{{ asset('images/date-palm-plantation.jpg') }}" alt="رؤيتنا ورسالتنا" loading="lazy">
+            <img src="{{ asset('images/hero_palm_farm.jpg') }}" alt="رؤيتنا ورسالتنا" loading="lazy">
         </div>
     </div>
 </section>
@@ -239,35 +239,6 @@
     </div>
 </section>
 
-<section class="about-section">
-    <h2 class="section-title">فريقنا</h2>
-    <div class="team-grid">
-        <div class="team-member">
-            <div class="member-image">👩‍💼</div>
-            <div class="member-info">
-                <h4>رهف المطرفي</h4>
-            </div>
-        </div>
-        <div class="team-member">
-            <div class="member-image">👩‍💼</div>
-            <div class="member-info">
-                <h4>جود البركة</h4>
-            </div>
-        </div>
-        <div class="team-member">
-            <div class="member-image">👩‍💼</div>
-            <div class="member-info">
-                <h4>سارة السحيباني</h4>
-            </div>
-        </div>
-        <div class="team-member">
-            <div class="member-image">👩‍💼</div>
-            <div class="member-info">
-                <h4>دانة الحميدي</h4>
-            </div>
-        </div>
-    </div>
-</section>
 
 <section class="about-section" style="background-color: #f9f7f4; padding: 40px; border-radius: 10px; margin-bottom: 60px;">
     <h2 class="section-title">إحصائياتنا</h2>

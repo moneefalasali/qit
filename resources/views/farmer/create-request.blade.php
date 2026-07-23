@@ -44,6 +44,7 @@
         border-radius: 5px;
         font-family: 'Tajawal', sans-serif;
         font-size: 14px;
+        background-color: #f9f7f4;
     }
 
     .form-group input:focus,
@@ -86,7 +87,7 @@
     }
 
     .submit-btn:hover {
-        background-color: var(--light-green);
+        background-color: goldenrod;
     }
 
     .cancel-btn {

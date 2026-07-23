@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Farmer;
 use App\Models\Worker;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Str;
 
 class AuthController extends Controller
 {
@@ -51,14 +55,25 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8|confirmed',
             'role' => 'required|in:farmer,worker',
-            'phone' => 'required|string',
-            'city' => 'required|string',
+            'phone' => ['required', 'string', 'max:20', 'regex:/^[0-9+\-\s]{8,20}$/'],
+            'city' => 'required|string|max:255',
+            'national_id' => [
+                'nullable',
+                'string',
+                'max:50',
+                'unique:workers,national_id',
+                'required_if:role,worker',
+            ],
+        ], [
+            'national_id.required_if' => 'رقم الهوية مطلوب عند تسجيل عامل زراعي.',
+            'national_id.string' => 'يجب أن يكون رقم الهوية الوطنية نصًا.',
+            'phone.regex' => 'يرجى إدخال رقم هاتف صحيح.',
         ]);
 
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'password' => bcrypt($validated['password']),
+            'password' => Hash::make($validated['password']),
             'role' => $validated['role'],
             'phone' => $validated['phone'],
             'city' => $validated['city'],
@@ -73,7 +88,7 @@ class AuthController extends Controller
         } elseif ($validated['role'] === 'worker') {
             Worker::create([
                 'user_id' => $user->id,
-                'national_id' => '',
+                'national_id' => $validated['national_id'],
                 'status' => 'pending',
             ]);
         }
@@ -98,7 +113,12 @@ class AuthController extends Controller
     public function sendResetLink(Request $request)
     {
         $request->validate(['email' => 'required|email']);
-        return back()->with('status', 'تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.');
+
+        $status = Password::sendResetLink($request->only('email'));
+
+        return $status === Password::RESET_LINK_SENT
+            ? back()->with('status', 'تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.')
+            : back()->withErrors(['email' => 'لم نتمكن من العثور على حساب بهذا البريد الإلكتروني.']);
     }
 
     public function showResetPassword($token)
@@ -114,6 +134,21 @@ class AuthController extends Controller
             'token' => 'required',
         ]);
 
-        return redirect()->route('login')->with('status', 'تم إعادة تعيين كلمة المرور بنجاح!');
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password),
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        return $status === Password::PASSWORD_RESET
+            ? redirect()->route('login')->with('status', 'تم إعادة تعيين كلمة المرور بنجاح!')
+            : back()->withErrors(['email' => 'فشل إعادة تعيين كلمة المرور. تحقق من البيانات وحاول مرة أخرى.']);
     }
 }

@@ -125,7 +125,7 @@
     }
 
     .btn-primary:hover {
-        background-color: var(--light-green);
+        background-color: goldenrod;
     }
 
     .btn-secondary {

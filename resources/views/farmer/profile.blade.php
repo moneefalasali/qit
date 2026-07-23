@@ -113,7 +113,7 @@
     }
 
     .submit-btn:hover {
-        background-color: var(--light-green);
+        background-color:goldenrod;
     }
 
     .profile-sidebar {

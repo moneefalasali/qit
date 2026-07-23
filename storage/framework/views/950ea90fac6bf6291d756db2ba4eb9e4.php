@@ -1,0 +1,307 @@
+<?php $__env->startSection('title', 'الطلبات - قطاف القصيم'); ?>
+
+<?php $__env->startSection('styles'); ?>
+<style>
+    .requests-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .page-header h1 {
+        color: var(--primary-green);
+        font-size: 28px;
+    }
+
+    .page-header a {
+        background-color: var(--primary-green);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+    .page-header a:hover {
+        background-color: goldenrod;
+    }
+
+    .filters {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+    }
+
+    .filter-btn {
+        padding: 8px 16px;
+        border: 2px solid var(--border-color);
+        background-color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: 'Tajawal', sans-serif;
+        transition: all 0.3s;
+    }
+
+    .filter-btn.active {
+        background-color: var(--primary-green);
+        color: white;
+        border-color: var(--primary-green);
+    }
+
+    .requests-table {
+        background-color: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table thead {
+        background-color: #f9f7f4;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .table th {
+        padding: 15px;
+        text-align: right;
+        color: var(--primary-green);
+        font-weight: 600;
+    }
+
+    .table td {
+        padding: 15px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .table tbody tr:hover {
+        background-color: #b67008;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .status-pending {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+
+    .status-approved {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .status-waiting_for_payment {
+        background-color: #e2e3e5;
+        color: #383d41;
+    }
+
+    .status-in-progress {
+        background-color: #d1ecf1;
+        color: #0c5460;
+    }
+
+    .status-completed {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .status-cancelled {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+    }
+
+    .action-btn {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s;
+    }
+
+    .action-btn-view {
+        background-color: var(--primary-green);
+        color: white;
+    }
+
+    .action-btn-view:hover {
+        background-color: goldenrod;
+    }
+
+    .action-btn-edit {
+        background-color: #17a2b8;
+        color: white;
+    }
+
+    .action-btn-edit:hover {
+        background-color: #138496;
+    }
+
+    .action-btn-delete {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .action-btn-delete:hover {
+        background-color: #c82333;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+    }
+
+    .empty-state i {
+        font-size: 64px;
+        color: var(--beige);
+        margin-bottom: 20px;
+    }
+
+    .empty-state h3 {
+        color: var(--light-text);
+        margin-bottom: 10px;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 30px;
+    }
+
+    .pagination a, .pagination span {
+        padding: 8px 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        text-decoration: none;
+        color: var(--primary-green);
+    }
+
+    .pagination a:hover {
+        background-color: var(--primary-green);
+        color: white;
+    }
+
+    .pagination .active {
+        background-color: var(--primary-green);
+        color: white;
+    }
+
+    @media (max-width: 768px) {
+        .table {
+            font-size: 13px;
+        }
+
+        .table th, .table td {
+            padding: 10px;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+        }
+    }
+</style>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('content'); ?>
+<div class="requests-container">
+    <div class="page-header">
+        <h1>طلبات العمالة</h1>
+        <a href="<?php echo e(route('farmer.request.create')); ?>">+ طلب جديد</a>
+    </div>
+
+    <?php if(session('success')): ?>
+        <div style="background-color: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+            <?php echo e(session('success')); ?>
+
+        </div>
+    <?php endif; ?>
+
+    <div class="filters">
+        <span class="filter-btn active">الكل</span>
+        <span class="filter-btn">قيد المراجعة</span>
+        <span class="filter-btn">موافق عليه</span>
+        <span class="filter-btn">في انتظار الدفع</span>
+        <span class="filter-btn">قيد التنفيذ</span>
+        <span class="filter-btn">مكتمل</span>
+    </div>
+
+    <?php if($requests->count() > 0): ?>
+        <div class="requests-table">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>نوع الخدمة</th>
+                        <th>عدد العمال</th>
+                        <th>الأجر اليومي</th>
+                        <th>تاريخ البداية</th>
+                        <th>الحالة</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $__currentLoopData = $requests; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $request): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <tr>
+                            <td><?php echo e($request->service_type); ?></td>
+                            <td><?php echo e($request->number_of_workers); ?></td>
+                            <td><?php echo e($request->daily_wage); ?> ر.س</td>
+                            <td><?php echo e($request->start_date->format('Y-m-d')); ?></td>
+                            <td>
+                                <span class="status-badge status-<?php echo e($request->status); ?>"><?php echo e($request->status_label); ?></span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="<?php echo e(route('farmer.request.show', $request->id)); ?>" class="action-btn action-btn-view">عرض</a>
+                                    <?php if(in_array($request->status, ['approved', 'waiting_for_payment'])): ?>
+                                        <a href="<?php echo e(route('payment.form', $request->id)); ?>" class="action-btn" style="background-color: #ffc107; color: #000;">دفع</a>
+                                    <?php elseif($request->status === 'pending'): ?>
+                                        <span class="action-btn" style="background-color: #f1f3f5; color: #6c757d; cursor: default;">بانتظار المراجعة</span>
+                                    <?php endif; ?>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <?php echo e($requests->links()); ?>
+
+        </div>
+    <?php else: ?>
+        <div class="empty-state">
+            <i class="fas fa-inbox"></i>
+            <h3>لا توجد طلبات حالياً</h3>
+            <p style="color: var(--light-text); margin-bottom: 20px;">ابدأ بإنشاء طلب عمالة جديد</p>
+            <a href="<?php echo e(route('farmer.request.create')); ?>" style="display: inline-block; background-color: var(--primary-green); color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none;">+ طلب جديد</a>
+        </div>
+    <?php endif; ?>
+</div>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\qitaf_alqseem\resources\views\farmer\requests.blade.php ENDPATH**/ ?>

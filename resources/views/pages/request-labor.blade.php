@@ -125,7 +125,7 @@
     }
 
     .login-prompt a:hover {
-        background-color: var(--light-green);
+        background-color: goldenrod;
     }
 
     @media (max-width: 768px) {
@@ -144,87 +144,33 @@
 @section('content')
 <div class="request-container">
     <h1>طلب عمالة</h1>
-    <p>قم بتقديم طلب عمالة جديد للحصول على العمال المؤهلين</p>
+    <p>احصل على العمالة الزراعية المطلوبة بأسرع وقت وبأسهل تجربة.</p>
 
-    @if (auth()->check() && auth()->user()->role === 'farmer')
-        <div class="info-box">
-            <p><i class="fas fa-info-circle"></i> يرجى ملء جميع الحقول المطلوبة بدقة لضمان حصولك على أفضل النتائج</p>
-        </div>
-
-        <form method="POST" action="{{ route('farmer.request.store') }}">
-            @csrf
-
-            <div class="form-group">
-                <label for="service_type">نوع الخدمة المطلوبة</label>
-                <select id="service_type" name="service_type" required>
-                    <option value="">اختر نوع الخدمة</option>
-                    <option value="جني_التمور">جني التمور</option>
-                    <option value="تلقيح_النخيل">تلقيح النخيل</option>
-                    <option value="تقليم_النخيل">تقليم النخيل</option>
-                    <option value="الري_والعناية">الري والعناية</option>
-                    <option value="الفرز_والتعبئة">الفرز والتعبئة</option>
-                    <option value="تحميل_ونقل">تحميل ونقل</option>
-                    <option value="خدمات_أخرى">خدمات أخرى</option>
-                </select>
-                @error('service_type')
-                    <span style="color: #dc3545; font-size: 13px;">{{ $message }}</span>
-                @enderror
+    @auth
+        @if(auth()->user()->role === 'farmer')
+            <div class="info-box">
+                <p><i class="fas fa-info-circle"></i> يمكنك تقديم طلب جديد مباشرة من صفحة الطلبات الخاصة بك.</p>
             </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="number_of_workers">عدد العمال المطلوبين</label>
-                    <input type="number" id="number_of_workers" name="number_of_workers" min="1" required>
-                    @error('number_of_workers')
-                        <span style="color: #dc3545; font-size: 13px;">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="daily_wage">الأجر اليومي (ر.س)</label>
-                    <input type="number" id="daily_wage" name="daily_wage" min="0" step="0.01" required>
-                    @error('daily_wage')
-                        <span style="color: #dc3545; font-size: 13px;">{{ $message }}</span>
-                    @enderror
+            <div class="form-group text-center">
+                <a href="{{ route('farmer.request.create') }}" class="submit-btn" style="display: inline-block; width: auto;">إنشاء طلب جديد</a>
+            </div>
+        @else
+            <div class="login-prompt">
+                <p>يجب أن تكون مسجلاً دخولاً كمزارع لإنشاء طلب عمالة.</p>
+                <div>
+                    <a href="{{ route('login') }}">تسجيل الدخول</a>
+                    <a href="{{ route('register') }}">إنشاء حساب مزارع</a>
                 </div>
             </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="start_date">تاريخ البداية</label>
-                    <input type="date" id="start_date" name="start_date" required>
-                    @error('start_date')
-                        <span style="color: #dc3545; font-size: 13px;">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="end_date">تاريخ النهاية (اختياري)</label>
-                    <input type="date" id="end_date" name="end_date">
-                    @error('end_date')
-                        <span style="color: #dc3545; font-size: 13px;">{{ $message }}</span>
-                    @enderror
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="description">وصف الخدمة المطلوبة</label>
-                <textarea id="description" name="description" placeholder="أضف تفاصيل إضافية عن الخدمة المطلوبة..."></textarea>
-                @error('description')
-                    <span style="color: #dc3545; font-size: 13px;">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <button type="submit" class="submit-btn">تقديم الطلب</button>
-        </form>
+        @endif
     @else
         <div class="login-prompt">
-            <p>يجب أن تكون مسجلاً دخولاً كمزارع لتقديم طلب عمالة</p>
+            <p>يجب أن تكون مسجلاً دخولاً كمزارع لإنشاء طلب عمالة.</p>
             <div>
                 <a href="{{ route('login') }}">تسجيل الدخول</a>
                 <a href="{{ route('register') }}">إنشاء حساب</a>
             </div>
         </div>
-    @endif
+    @endauth
 </div>
 @endsection

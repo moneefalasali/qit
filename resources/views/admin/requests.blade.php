@@ -11,6 +11,29 @@
         <span class="badge bg-light text-dark">{{ $requests->total() }} طلب</span>
     </div>
 
+    <form method="GET" class="row g-2 mb-3">
+        <div class="col-md-4">
+            <input type="text" name="search" class="form-control" placeholder="ابحث باسم المزارع أو الخدمة" value="{{ request('search') }}">
+        </div>
+        <div class="col-md-3">
+            <select name="status" class="form-select">
+                <option value="">كل الحالات</option>
+                <option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>قيد المراجعة</option>
+                <option value="approved" {{ request('status') === 'approved' ? 'selected' : '' }}>تمت الموافقة</option>
+                <option value="waiting_for_payment" {{ request('status') === 'waiting_for_payment' ? 'selected' : '' }}>في انتظار الدفع</option>
+                <option value="in_progress" {{ request('status') === 'in_progress' ? 'selected' : '' }}>قيد التنفيذ</option>
+                <option value="completed" {{ request('status') === 'completed' ? 'selected' : '' }}>مكتمل</option>
+                <option value="cancelled" {{ request('status') === 'cancelled' ? 'selected' : '' }}>ملغي</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-success w-100">بحث</button>
+        </div>
+        <div class="col-md-3">
+            <a href="{{ route('admin.requests') }}" class="btn btn-outline-secondary w-100">إعادة تعيين</a>
+        </div>
+    </form>
+
     <div class="table-responsive">
         <table class="table table-hover mb-0">
             <thead class="bg-light">
@@ -32,14 +55,17 @@
                         <td class="px-3 py-3 border-0">{{ $request->service_type ?? '-' }}</td>
                         <td class="px-3 py-3 border-0">{{ $request->number_of_workers }}</td>
                         <td class="px-3 py-3 border-0">
-                            <span class="badge bg-warning-subtle text-warning">{{ $request->status }}</span>
+                            <span class="badge {{ $request->status_badge_class }}">
+                                {{ $request->status_label }}
+                            </span>
                         </td>
                         <td class="px-3 py-3 border-0">
                             <form method="POST" action="{{ route('admin.request.status', $request->id) }}" class="d-inline">
                                 @csrf
                                 <select name="status" class="form-select form-select-sm d-inline w-auto" onchange="this.form.submit()">
-                                    <option value="pending" {{ $request->status === 'pending' ? 'selected' : '' }}>قيد الانتظار</option>
-                                    <option value="approved" {{ $request->status === 'approved' ? 'selected' : '' }}>موافق</option>
+                                    <option value="pending" {{ $request->status === 'pending' ? 'selected' : '' }}>قيد المراجعة</option>
+                                    <option value="approved" {{ $request->status === 'approved' ? 'selected' : '' }}>تمت الموافقة</option>
+                                    <option value="waiting_for_payment" {{ $request->status === 'waiting_for_payment' ? 'selected' : '' }}>في انتظار الدفع</option>
                                     <option value="in_progress" {{ $request->status === 'in_progress' ? 'selected' : '' }}>قيد التنفيذ</option>
                                     <option value="completed" {{ $request->status === 'completed' ? 'selected' : '' }}>مكتمل</option>
                                     <option value="cancelled" {{ $request->status === 'cancelled' ? 'selected' : '' }}>ملغي</option>
@@ -50,7 +76,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center py-4 text-muted">لا توجد طلبات حتى الآن</td>
+                        <td colspan="7" class="text-center py-4 text-muted">لا توجد طلبات حتى الآن</td>
                     </tr>
                 @endforelse
             </tbody>

@@ -39,6 +39,20 @@ class FarmerController extends Controller
             return view('farmer.requests', compact('requests'));
         }
 
+        public function workers()
+        {
+            $farmer = auth()->user()->farmer;
+            $workers = WorkerApplication::whereHas('laborRequest', function ($query) use ($farmer) {
+                    $query->where('farmer_id', $farmer->id);
+                })
+                ->whereIn('status', ['accepted', 'completed'])
+                ->with(['worker.user', 'laborRequest'])
+                ->latest()
+                ->paginate(12);
+
+            return view('farmer.workers', compact('workers'));
+        }
+
         public function createRequest()
         {
             return view('farmer.create-request');
@@ -49,10 +63,13 @@ class FarmerController extends Controller
             $validated = $request->validate([
                 'service_type' => 'required|string',
                 'number_of_workers' => 'required|integer|min:1',
-                'start_date' => 'required|date',
+                'start_date' => 'required|date|after_or_equal:today',
                 'end_date' => 'nullable|date|after:start_date',
-                'description' => 'nullable|string',
+                'description' => 'nullable|string|max:1000',
                 'daily_wage' => 'required|numeric|min:0',
+            ], [
+                'start_date.after_or_equal' => 'لا يمكن اختيار تاريخ سابق على اليوم.',
+                'end_date.after' => 'يجب أن يكون تاريخ النهاية بعد تاريخ البداية.',
             ]);
 
             $farmer = auth()->user()->farmer;
@@ -67,13 +84,29 @@ class FarmerController extends Controller
                 'status' => 'pending',
             ]);
 
-            return redirect()->route('payment.form', $laborRequest->id)->with('success', 'تم إنشاء الطلب بنجاح! يرجى إكمال عملية الدفع.');
+            return redirect()->route('farmer.request.confirmation', $laborRequest->id)
+                ->with('success', 'تم إرسال طلبك بنجاح، وسيتم مراجعته قريباً.');
+        }
+
+        public function confirmation($id)
+        {
+            $laborRequest = LaborRequest::where('id', $id)
+                ->where('farmer_id', auth()->user()->farmer->id)
+                ->firstOrFail();
+
+            return view('farmer.request-confirmation', compact('laborRequest'));
         }
 
         public function showRequest($id)
         {
-            $laborRequest = LaborRequest::findOrFail($id);
-            $applications = WorkerApplication::where('labor_request_id', $id)->paginate(10);
+            $laborRequest = LaborRequest::where('id', $id)
+                ->where('farmer_id', auth()->user()->farmer->id)
+                ->firstOrFail();
+
+            $applications = WorkerApplication::where('labor_request_id', $id)
+                ->with('worker.user')
+                ->paginate(10);
+
             return view('farmer.show-request', compact('laborRequest', 'applications'));
         }
 
@@ -111,4 +144,16 @@ class FarmerController extends Controller
         {
             return view('farmer.settings');
         }
+
+    public function updateSettings(Request $request)
+    {
+        $validated = $request->validate([
+            'language' => 'required|in:ar,en,hi,ur,bn,fa-AF,ps',
+            'timezone' => 'required|in:Asia/Riyadh,UTC',
+        ]);
+
+        session(['user_settings' => $validated]);
+
+        return back()->with('success', 'تم حفظ تفضيلات الإعدادات بنجاح.');
+    }
     }

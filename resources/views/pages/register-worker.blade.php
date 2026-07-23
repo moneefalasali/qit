@@ -60,13 +60,14 @@
         border-radius: 5px;
         font-family: 'Tajawal', sans-serif;
         font-size: 14px;
+        background-color: #f9f7f4;
     }
 
     .form-group input:focus,
     .form-group select:focus,
     .form-group textarea:focus {
         outline: none;
-        border-color: var(--primary-green);
+        border-color: greenyellow;
         box-shadow: 0 0 5px rgba(45, 80, 22, 0.2);
     }
 
@@ -96,7 +97,7 @@
     }
 
     .submit-btn:hover {
-        background-color: var(--light-green);
+        background-color: goldenrod;
     }
 
     .login-prompt {

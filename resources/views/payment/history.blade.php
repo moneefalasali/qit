@@ -50,7 +50,7 @@
     }
 
     .table tbody tr:hover {
-        background-color: #f9f7f4;
+        background-color: #fddba8;
     }
 
     .status-badge {
@@ -103,7 +103,7 @@
     }
 
     .action-btn-view:hover {
-        background-color: var(--light-green);
+        background-color: goldenrod;
     }
 
     .empty-state {
@@ -138,7 +138,7 @@
     }
 
     .pagination a:hover {
-        background-color: var(--primary-green);
+        background-color: goldenrod;
         color: white;
     }
 

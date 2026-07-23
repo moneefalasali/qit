@@ -33,11 +33,13 @@
     }
 
     .summary-item {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 15px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid var(--border-color);
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 10px;
+        padding: 0;
+        border-bottom: none;
     }
 
     .summary-item:last-child {
@@ -49,25 +51,74 @@
     .summary-label {
         color: var(--light-text);
         font-weight: 600;
+        text-align: right;
+        white-space: normal;
     }
 
-    .summary-value {
-        color: var(--dark-text);
-        font-weight: 600;
+    .summary-value,
+    .summary-total .value {
+        color: var(--primary-green);
+        font-weight: 700;
+        direction: ltr;
+        unicode-bidi: isolate;
+        display: inline-block;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    .amount {
+        direction: ltr;
+        unicode-bidi: isolate-override;
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .amount-number {
+        direction: ltr;
+        unicode-bidi: isolate;
+        display: inline-block;
+    }
+
+    .amount-currency {
+        direction: rtl;
+        unicode-bidi: isolate;
+        display: inline-block;
     }
 
     .summary-total {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 20px;
-        padding-top: 20px;
-        border-top: 2px solid var(--border-color);
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 14px;
+        margin-top: 14px;
+        padding-top: 10px;
+        border-top: none;
         font-size: 18px;
     }
 
     .summary-total .value {
         color: var(--primary-green);
         font-weight: 700;
+        direction: ltr;
+        unicode-bidi: isolate;
+        display: inline-block;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    .commission-box {
+        background: #fffdf9;
+        border: 1px solid #ece4d7;
+        border-radius: 10px;
+        padding: 14px;
+        margin-top: 12px;
+    }
+
+    .request-details {
+        margin-top: 16px;
+        padding: 14px;
+        border-radius: 10px;
+        background: #f9f7f4;
     }
 
     .form-group {
@@ -113,7 +164,7 @@
 
     .payment-method.selected {
         border-color: var(--primary-green);
-        background-color: #f9f7f4;
+        background-color: #fddba8;
     }
 
     .payment-method i {
@@ -190,7 +241,7 @@
     }
 
     .submit-btn:hover {
-        background-color: var(--light-green);
+        background-color: goldenrod;
     }
 
     .submit-btn:disabled {
@@ -232,30 +283,50 @@
 
     <div class="payment-summary">
         <div class="summary-item">
-            <span class="summary-label">نوع الخدمة</span>
-            <span class="summary-value">{{ $laborRequest->service_type }}</span>
+            <span class="summary-label">قيمة الفاتورة كاملة</span>
+            <span class="summary-amount" dir="ltr">{{ number_format($amount, 2) }} ر.س</span>
         </div>
         <div class="summary-item">
-            <span class="summary-label">عدد العمال</span>
-            <span class="summary-value">{{ $laborRequest->number_of_workers }}</span>
+            <span class="summary-label">نسبة العمولة</span>
+            <span class="summary-amount" dir="ltr">{{ number_format($commissionRate * 100, 1) }}%</span>
         </div>
         <div class="summary-item">
-            <span class="summary-label">الأجر اليومي</span>
-            <span class="summary-value">{{ $laborRequest->daily_wage }} ر.س</span>
-        </div>
-        <div class="summary-item">
-            <span class="summary-label">عدد الأيام</span>
-            <span class="summary-value">
-                @if ($laborRequest->end_date)
-                    {{ $laborRequest->end_date->diffInDays($laborRequest->start_date) + 1 }}
-                @else
-                    1
-                @endif
-            </span>
+            <span class="summary-label">العمولة</span>
+            <span class="summary-amount" dir="ltr">{{ number_format($commissionAmount, 2) }} ر.س</span>
         </div>
         <div class="summary-total">
-            <span class="summary-label">المبلغ الإجمالي</span>
-            <span class="value">{{ number_format($amount, 2) }} ر.س</span>
+            <span class="summary-label">المبلغ النهائي</span>
+            <span class="value summary-amount" dir="ltr">{{ number_format($finalAmount, 2) }} ر.س</span>
+        </div>
+
+        <div class="commission-box mt-3">
+            <div class="fw-bold mb-2" style="color: #2d5a27;">تفاصيل الطلب</div>
+            <div class="summary-item">
+                <span class="summary-label">نوع الخدمة</span>
+                <span class="summary-value">{{ $laborRequest->service_type }}</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">عدد العمال</span>
+                <span class="summary-value">{{ $laborRequest->number_of_workers }}</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">الأجر اليومي</span>
+                <span class="summary-amount" dir="ltr">{{ $laborRequest->daily_wage }} ر.س</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">عدد الأيام</span>
+                <span class="summary-value">
+                    @php
+                        $days = 1;
+                        if ($laborRequest->end_date) {
+                            $start = $laborRequest->start_date;
+                            $end = $laborRequest->end_date;
+                            $days = max(1, abs($start->diffInDays($end)) + 1);
+                        }
+                    @endphp
+                    {{ $days }}
+                </span>
+            </div>
         </div>
     </div>
 

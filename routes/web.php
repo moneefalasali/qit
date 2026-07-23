@@ -38,13 +38,16 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->n
 Route::middleware(['auth', 'farmer'])->prefix('farmer')->group(function () {
     Route::get('/dashboard', [FarmerController::class, 'dashboard'])->name('farmer.dashboard');
     Route::get('/requests', [FarmerController::class, 'myRequests'])->name('farmer.requests');
+    Route::get('/workers', [FarmerController::class, 'workers'])->name('farmer.workers');
     Route::get('/request/create', [FarmerController::class, 'createRequest'])->name('farmer.request.create');
     Route::post('/request', [FarmerController::class, 'storeRequest'])->name('farmer.request.store');
+    Route::get('/request/{id}/confirmation', [FarmerController::class, 'confirmation'])->name('farmer.request.confirmation');
     Route::get('/request/{id}', [FarmerController::class, 'showRequest'])->name('farmer.request.show');
     Route::get('/profile', [FarmerController::class, 'profile'])->name('farmer.profile');
     Route::post('/profile', [FarmerController::class, 'updateProfile'])->name('farmer.profile.update');
     Route::get('/notifications', [FarmerController::class, 'notifications'])->name('farmer.notifications');
     Route::get('/settings', [FarmerController::class, 'settings'])->name('farmer.settings');
+    Route::post('/settings', [FarmerController::class, 'updateSettings'])->name('farmer.settings.update');
 });
 
 // Worker Routes
@@ -54,9 +57,12 @@ Route::middleware(['auth', 'worker'])->prefix('worker')->group(function () {
     Route::post('/apply', [WorkerController::class, 'applyJob'])->name('worker.apply');
     Route::get('/applications', [WorkerController::class, 'myApplications'])->name('worker.applications');
     Route::get('/profile', [WorkerController::class, 'profile'])->name('worker.profile');
-    Route::post('/profile', [WorkerController::class, 'updateProfile'])->name('worker.profile.update');
+    Route::put('/profile', [WorkerController::class, 'updateProfile'])->name('worker.profile.update');
     Route::get('/notifications', [WorkerController::class, 'notifications'])->name('worker.notifications');
     Route::get('/documents', [WorkerController::class, 'documents'])->name('worker.documents');
+    Route::post('/documents/upload', [WorkerController::class, 'uploadDocument'])->name('worker.documents.upload');
+    Route::post('/documents/delete', [WorkerController::class, 'deleteDocument'])->name('worker.documents.delete');
+    Route::get('/documents/download', [WorkerController::class, 'downloadDocument'])->name('worker.documents.download');
 });
 
 // Admin Routes
@@ -66,13 +72,18 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/workers', [AdminController::class, 'workers'])->name('admin.workers');
     Route::post('/worker/{id}/approve', [AdminController::class, 'approveWorker'])->name('admin.worker.approve');
     Route::post('/worker/{id}/reject', [AdminController::class, 'rejectWorker'])->name('admin.worker.reject');
+    Route::get('/worker/{id}', [AdminController::class, 'showWorker'])->name('admin.worker.show');
     Route::get('/requests', [AdminController::class, 'requests'])->name('admin.requests');
     Route::post('/request/{id}/status', [AdminController::class, 'updateRequestStatus'])->name('admin.request.status');
+    Route::get('/notifications', [AdminController::class, 'notifications'])->name('admin.notifications');
     Route::get('/services', [AdminController::class, 'services'])->name('admin.services');
     Route::post('/service/{id}/toggle', [AdminController::class, 'toggleServiceStatus'])->name('admin.service.toggle');
     Route::get('/reports', [AdminController::class, 'reports'])->name('admin.reports');
     Route::get('/activity-log', [AdminController::class, 'activityLog'])->name('admin.activity-log');
 });
+
+// Contact Form
+Route::post('/contact', [HomeController::class, 'sendContact'])->name('contact.send');
 
 // Payment Routes
 Route::middleware('auth')->prefix('payment')->group(function () {
