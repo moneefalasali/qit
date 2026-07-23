@@ -38,7 +38,9 @@
                         <div class="input-group">
                             <span class="input-group-text bg-light border-start-0"><i class="fas fa-lock text-muted"></i></span>
                             <input type="password" class="form-control bg-light border-end-0 @error('password') is-invalid @enderror" id="password" name="password" placeholder="أدخل كلمة المرور" required>
-                            <span class="input-group-text bg-light border-start-0"><i class="far fa-eye text-muted"></i></span>
+                            <button type="button" class="input-group-text bg-light border-start-0" id="toggle-password" aria-label="إظهار كلمة المرور" aria-pressed="false">
+                                <i class="far fa-eye text-muted" aria-hidden="true"></i>
+                            </button>
                         </div>
                         @error('password')
                             <div class="text-danger small mt-1">{{ $message }}</div>
@@ -128,4 +130,22 @@
         }
     }
 </style>
+@endsection
+
+@section('scripts')
+<script>
+    const passwordInput = document.getElementById('password');
+    const togglePassword = document.getElementById('toggle-password');
+    const togglePasswordIcon = togglePassword.querySelector('i');
+
+    togglePassword.addEventListener('click', () => {
+        const isPasswordVisible = passwordInput.type === 'text';
+
+        passwordInput.type = isPasswordVisible ? 'password' : 'text';
+        togglePassword.setAttribute('aria-pressed', String(!isPasswordVisible));
+        togglePassword.setAttribute('aria-label', isPasswordVisible ? 'إظهار كلمة المرور' : 'إخفاء كلمة المرور');
+        togglePasswordIcon.classList.toggle('fa-eye', isPasswordVisible);
+        togglePasswordIcon.classList.toggle('fa-eye-slash', !isPasswordVisible);
+    });
+</script>
 @endsection

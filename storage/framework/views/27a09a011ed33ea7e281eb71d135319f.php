@@ -59,7 +59,9 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" id="password" name="password" placeholder="أدخل كلمة المرور" required>
-                            <span class="input-group-text bg-light border-start-0"><i class="far fa-eye text-muted"></i></span>
+                            <button type="button" class="input-group-text bg-light border-start-0" id="toggle-password" aria-label="إظهار كلمة المرور" aria-pressed="false">
+                                <i class="far fa-eye text-muted" aria-hidden="true"></i>
+                            </button>
                         </div>
                         <?php $__errorArgs = ['password'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -156,6 +158,24 @@ unset($__errorArgs, $__bag); ?>
         }
     }
 </style>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
+<script>
+    const passwordInput = document.getElementById('password');
+    const togglePassword = document.getElementById('toggle-password');
+    const togglePasswordIcon = togglePassword.querySelector('i');
+
+    togglePassword.addEventListener('click', () => {
+        const isPasswordVisible = passwordInput.type === 'text';
+
+        passwordInput.type = isPasswordVisible ? 'password' : 'text';
+        togglePassword.setAttribute('aria-pressed', String(!isPasswordVisible));
+        togglePassword.setAttribute('aria-label', isPasswordVisible ? 'إظهار كلمة المرور' : 'إخفاء كلمة المرور');
+        togglePasswordIcon.classList.toggle('fa-eye', isPasswordVisible);
+        togglePasswordIcon.classList.toggle('fa-eye-slash', !isPasswordVisible);
+    });
+</script>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\qitaf_alqseem\resources\views/auth/login.blade.php ENDPATH**/ ?>
